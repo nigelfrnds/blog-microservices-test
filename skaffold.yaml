@@ -1,0 +1,58 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+    kubectl:
+        manifests:
+            - ./infra/k8s/*
+build:
+    local:
+        push: false
+    artifacts:
+        - image: nigelfrnds/blog-microservices-client
+          context: client
+          docker:
+            dockerfile: Dockerfile
+          sync:
+            manual:
+                - src: 'src/**/*.js'
+                  dest: .
+        - image: nigelfrnds/blog-microservices-comments
+          context: comments
+          docker:
+            dockerfile: Dockerfile
+          sync:
+            manual:
+                - src: '*.js'
+                  dest: .
+        - image: nigelfrnds/blog-microservices-event-bus
+          context: event-bus
+          docker:
+            dockerfile: Dockerfile
+          sync:
+            manual:
+                - src: '*.js'
+                  dest: .
+        - image: nigelfrnds/blog-microservices-moderation
+          context: moderation
+          docker:
+            dockerfile: Dockerfile
+          sync:
+            manual:
+                - src: '*.js'
+                  dest: .
+        - image: nigelfrnds/blog-microservices-posts
+          context: posts
+          docker:
+            dockerfile: Dockerfile
+          sync:
+            manual:
+                - src: '*.js'
+                  dest: .
+        - image: nigelfrnds/blog-microservices-query-service
+          context: query-service
+          docker:
+            dockerfile: Dockerfile
+          sync:
+            manual:
+                - src: '*.js'
+                  dest: .
